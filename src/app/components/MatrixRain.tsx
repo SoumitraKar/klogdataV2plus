@@ -1,32 +1,45 @@
 import { useEffect, useRef } from "react";
+import { usePerformanceMode } from "./PerformanceMode";
 
-export function MatrixRain() {
+type MatrixRainProps = {
+  active?: boolean;
+};
+
+export function MatrixRain({ active = true }: MatrixRainProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { effectiveMode } = usePerformanceMode();
+  const isLightMode = effectiveMode === "light";
 
   useEffect(() => {
+    if (!active) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
     const binary = "01";
-    const fontSize = 10;
-    const columns = canvas.width / fontSize;
+    const fontSize = isLightMode ? 12 : 10;
+    let drops: number[] = [];
 
-    const drops: number[] = [];
-    for (let i = 0; i < columns; i++) {
-      drops[i] = Math.random() * -100;
-    }
+    const resizeCanvas = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(window.innerWidth * ratio);
+      canvas.height = Math.floor(window.innerHeight * ratio);
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+      const columns = Math.ceil(window.innerWidth / fontSize);
+      drops = Array.from({ length: columns }, () => Math.random() * -100);
+    };
 
     function draw() {
       if (!ctx || !canvas) return;
 
       ctx.fillStyle = "rgba(15, 23, 42, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
       ctx.fillStyle = "rgba(34, 211, 238, 0.3)";
       ctx.font = fontSize + "px monospace";
@@ -42,20 +55,32 @@ export function MatrixRain() {
       }
     }
 
-    const interval = setInterval(draw, 35);
+    resizeCanvas();
 
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    let animationFrame = 0;
+    let lastFrameTime = 0;
+    const frameBudget = 1000 / (isLightMode ? 16 : 24);
+
+    const render = (timestamp: number) => {
+      if (timestamp - lastFrameTime >= frameBudget) {
+        draw();
+        lastFrameTime = timestamp;
+      }
+      animationFrame = window.requestAnimationFrame(render);
     };
 
-    window.addEventListener("resize", handleResize);
+    animationFrame = window.requestAnimationFrame(render);
+    window.addEventListener("resize", resizeCanvas);
 
     return () => {
-      clearInterval(interval);
-      window.removeEventListener("resize", handleResize);
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", resizeCanvas);
     };
-  }, []);
+  }, [active, isLightMode]);
+
+  if (!active) {
+    return null;
+  }
 
   return (
     <canvas

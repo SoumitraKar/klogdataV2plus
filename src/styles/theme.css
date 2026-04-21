@@ -179,3 +179,27 @@
     line-height: 1.5;
   }
 }
+
+.platform-card-sheen {
+  position: relative;
+}
+
+.platform-card-sheen::before {
+  content: "";
+  position: absolute;
+  top: -24%;
+  bottom: -24%;
+  left: 0;
+  z-index: 10;
+  width: 42%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-180%) rotate(14deg);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.32) 50%, transparent 100%);
+}
+
+.platform-card-sheen:hover::before {
+  opacity: 1;
+  transform: translateX(360%) rotate(14deg);
+  transition: transform 700ms ease-out, opacity 700ms ease-out;
+}

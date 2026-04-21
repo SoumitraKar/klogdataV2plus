@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
-import { AnimatedBorderButton } from "../AnimatedBorderButton";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
 
-export function Navbar() {
+type NavbarProps = {
+  onOpenConsultation: () => void;
+};
+
+export function Navbar({ onOpenConsultation }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,11 +24,17 @@ export function Navbar() {
     { name: "Home", href: "/" },
     { name: "Products", href: "#products" },
     { name: "Services", href: "#services" },
-    { name: "Company", href: "#company" },
   ];
+  const glassButtonClassName = "relative overflow-hidden rounded-full border border-white/15 bg-gradient-to-b from-white/16 via-white/8 to-white/4 text-white backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-10px_24px_rgba(15,23,42,0.35),0_10px_30px_rgba(2,6,23,0.18)] transition-all duration-300 hover:border-white/25 hover:from-white/20 hover:via-white/10 hover:to-white/6 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-10px_24px_rgba(15,23,42,0.32),0_14px_36px_rgba(2,6,23,0.24)]";
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
+
+    if (href === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
     if (href.startsWith("#")) {
       const element = document.getElementById(href.substring(1));
       if (element) {
@@ -42,19 +50,16 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group relative z-50">
+        <Link to="/" className="flex items-center gap-2 group relative z-50 cursor-pointer">
           <motion.div 
             className="w-10 h-10 flex items-center justify-center"
-            whileHover={{ 
-              scale: 1.1,
-              filter: "drop-shadow(0 0 15px rgba(34,211,238,0.7))"
-            }}
+            whileHover={{ scale: 1.1 }}
             transition={{ duration: 0.6 }}
           >
             <img src={LogoImage} alt="Klogdata Logo" className="w-full h-full object-contain" />
           </motion.div>
           <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-            Klog<span className="text-cyan-400">data</span>
+            Klog<span className="text-[#ff4f4f]">data</span>.
           </span>
         </Link>
 
@@ -64,7 +69,7 @@ export function Navbar() {
             <motion.button
               key={link.name}
               onClick={() => handleNavClick(link.href)}
-              className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors relative"
+              className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors relative cursor-pointer"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -77,14 +82,16 @@ export function Navbar() {
               />
             </motion.button>
           ))}
-          <AnimatedBorderButton className="px-5 py-2.5">
-            Get Demo
-          </AnimatedBorderButton>
+          <button onClick={onOpenConsultation} className={`${glassButtonClassName} px-5 py-2.5 text-sm font-semibold cursor-pointer`}>
+            <span className="pointer-events-none absolute inset-x-[22%] inset-y-[26%] rounded-full bg-gradient-to-r from-white/0 via-sky-100/18 to-white/0 blur-md" />
+            <span className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/8" />
+            <span className="relative z-10">Schedule a Consultation</span>
+          </button>
         </nav>
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden relative z-50 p-2 text-slate-300 hover:text-white"
+          className="md:hidden relative z-50 p-2 text-slate-300 hover:text-white cursor-pointer"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -104,14 +111,22 @@ export function Navbar() {
               <button
                 key={link.name}
                 onClick={() => handleNavClick(link.href)}
-                className="text-lg font-medium text-slate-300 hover:text-cyan-400 text-left py-2 border-b border-white/5"
+                className="text-lg font-medium text-slate-300 hover:text-cyan-400 text-left py-2 border-b border-white/5 cursor-pointer"
               >
                 {link.name}
               </button>
             ))}
-            <AnimatedBorderButton containerClassName="mt-4 w-full" className="py-3 w-full text-lg">
-              Get Demo
-            </AnimatedBorderButton>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenConsultation();
+              }}
+              className={`${glassButtonClassName} mt-4 w-full py-3 text-lg font-semibold cursor-pointer`}
+            >
+              <span className="pointer-events-none absolute inset-x-[22%] inset-y-[26%] rounded-full bg-gradient-to-r from-white/0 via-sky-100/18 to-white/0 blur-md" />
+              <span className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/8" />
+              <span className="relative z-10">Schedule a Consultation</span>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
