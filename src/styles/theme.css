@@ -121,7 +121,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
 
   body {
@@ -178,6 +178,19 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+}
+
+.brand-wordmark {
+  color: #e5e7eb;
+  letter-spacing: -0.02em;
+}
+
+.brand-wordmark-accent {
+  color: #ff4f4f;
+}
+
+.footer-watermark {
+  color: rgba(71, 85, 105, 0.62);
 }
 
 .platform-card-sheen {

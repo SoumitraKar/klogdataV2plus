@@ -86,8 +86,8 @@ export function Footer() {
                   >
                     <img src={LogoImage} alt="Klogdata Logo" className="w-full h-full object-contain" />
                   </motion.div>
-                  <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                    Klog<span className="text-[#ff4f4f]">data</span>.
+                  <span className="brand-wordmark text-xl font-bold">
+                    Klog<span className="brand-wordmark-accent">data</span>.
                   </span>
                 </Link>
                 <motion.p 
@@ -290,7 +290,7 @@ export function Footer() {
                 {flippedState === "contact" && (
                   <div className="w-full max-w-6xl flex flex-col items-center">
                     <div className="text-center mb-5">
-                      <h3 className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 tracking-tight uppercase">
+                      <h3 className="text-2xl md:text-4xl font-black text-cyan-300 tracking-tight uppercase">
                         Communication Link Established
                       </h3>
                       <p className="text-slate-400 mt-2 text-sm md:text-base max-w-2xl mx-auto">
@@ -314,7 +314,7 @@ export function Footer() {
                       </a>
 
                       <a
-                        href="tel:+918073338738"
+                        href="tel:+917008260267"
                         className="flex flex-col items-center text-center gap-3 p-4 sm:p-5 rounded-2xl bg-slate-900/50 border border-slate-800 relative overflow-hidden cursor-pointer transition-colors duration-300 hover:border-indigo-500/40"
                       >
                         <div className="absolute inset-0 bg-gradient-to-b from-indigo-500/10 to-transparent pointer-events-none" />
@@ -322,7 +322,7 @@ export function Footer() {
                           <Phone className="w-5 h-5 text-indigo-400" />
                         </div>
                         <div className="z-10 mt-1">
-                          <span className="block text-base sm:text-lg md:text-xl font-bold text-white tracking-widest mb-1 whitespace-normal sm:whitespace-nowrap">+91 80733 38738</span>
+                          <span className="block text-base sm:text-lg md:text-xl font-bold text-white tracking-widest mb-1 whitespace-normal sm:whitespace-nowrap">+91 70082 60267</span>
                           <span className="text-xs text-indigo-500 uppercase tracking-widest font-bold">Enterprise Sales</span>
                         </div>
                       </a>
@@ -347,7 +347,7 @@ export function Footer() {
                 {flippedState === "company" && (
                   <div className="w-full max-w-6xl flex flex-col items-center">
                     <div className="text-center mb-5">
-                      <h3 className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-sky-300 tracking-tight uppercase">
+                      <h3 className="text-2xl md:text-4xl font-black text-cyan-300 tracking-tight uppercase">
                         About Klogdata
                       </h3>
                       <p className="text-slate-400 mt-2 text-sm md:text-base mx-auto">
@@ -395,7 +395,7 @@ export function Footer() {
                 {flippedState === "careers" && (
                   <div className="w-full max-w-6xl flex flex-col items-center">
                     <div className="text-center mb-5">
-                      <h3 className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 tracking-tight uppercase">
+                      <h3 className="text-2xl md:text-4xl font-black text-orange-400 tracking-tight uppercase">
                         Personnel Matrix
                       </h3>
                       <p className="text-slate-400 mt-2 text-sm md:text-base max-w-2xl mx-auto">
@@ -417,7 +417,7 @@ export function Footer() {
                 {flippedState === "about" && (
                   <div className="w-full max-w-6xl flex flex-col items-center">
                     <div className="text-center mb-5">
-                      <h3 className="text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 tracking-tight uppercase">
+                      <h3 className="text-2xl md:text-4xl font-black text-emerald-400 tracking-tight uppercase">
                         Command Structure
                       </h3>
                       <p className="text-slate-400 mt-2 text-sm md:text-base max-w-2xl mx-auto">

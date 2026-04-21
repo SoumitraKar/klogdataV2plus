@@ -25,7 +25,7 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
     { name: "Products", href: "#products" },
     { name: "Services", href: "#services" },
   ];
-  const glassButtonClassName = "relative overflow-hidden rounded-full border border-white/15 bg-gradient-to-b from-white/16 via-white/8 to-white/4 text-white md:backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-10px_24px_rgba(15,23,42,0.35),0_10px_30px_rgba(2,6,23,0.18)] transition-all duration-300 hover:border-white/25 hover:from-white/20 hover:via-white/10 hover:to-white/6 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-10px_24px_rgba(15,23,42,0.32),0_14px_36px_rgba(2,6,23,0.24)]";
+  const glassButtonClassName = "rounded-full border border-white/15 bg-white/8 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(2,6,23,0.18)] transition-colors duration-300 hover:border-white/25 hover:bg-white/12";
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
@@ -58,8 +58,8 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
           >
             <img src={LogoImage} alt="Klogdata Logo" className="w-full h-full object-contain" />
           </motion.div>
-          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-            Klog<span className="text-[#ff4f4f]">data</span>.
+          <span className="brand-wordmark text-xl font-bold">
+            Klog<span className="brand-wordmark-accent">data</span>.
           </span>
         </Link>
 
@@ -82,10 +82,8 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
               />
             </motion.button>
           ))}
-          <button onClick={onOpenConsultation} className={`${glassButtonClassName} px-5 py-2.5 text-sm font-semibold cursor-pointer`}>
-            <span className="pointer-events-none absolute inset-x-[22%] inset-y-[26%] rounded-full bg-gradient-to-r from-white/0 via-sky-100/18 to-white/0 blur-md" />
-            <span className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/8" />
-            <span className="relative z-10">Schedule a Consultation</span>
+          <button onClick={onOpenConsultation} className={`${glassButtonClassName} cursor-pointer`}>
+            Schedule a Consultation
           </button>
         </nav>
 
@@ -121,11 +119,9 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
                 setMobileMenuOpen(false);
                 onOpenConsultation();
               }}
-              className={`${glassButtonClassName} mt-4 w-full py-3 text-lg font-semibold cursor-pointer`}
+              className={`${glassButtonClassName} mt-4 w-full py-3 text-base cursor-pointer`}
             >
-              <span className="pointer-events-none absolute inset-x-[22%] inset-y-[26%] rounded-full bg-gradient-to-r from-white/0 via-sky-100/18 to-white/0 blur-md" />
-              <span className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/8" />
-              <span className="relative z-10">Schedule a Consultation</span>
+              Schedule a Consultation
             </button>
           </motion.div>
         )}

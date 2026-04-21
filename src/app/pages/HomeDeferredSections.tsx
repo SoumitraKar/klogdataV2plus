@@ -229,7 +229,7 @@ export function HomeDeferredSections({
                 <h3 className="text-3xl font-black mb-2 flex items-center gap-3 text-cyan-50 tracking-tight">
                   Eduklog
                   <motion.span className="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/20 tracking-normal font-semibold" animate={undefined} transition={undefined}>
-                    v2.4
+                    v 1.4
                   </motion.span>
                 </h3>
 
@@ -583,46 +583,22 @@ export function HomeDeferredSections({
                 viewport={{ once: true }}
                 transition={isSmallScreen ? { duration: 0.25, delay: 0.16, ease: "easeOut" } : { delay: 0.5 }}
               >
-                <motion.div
-                  initial={isSmallScreen ? false : { opacity: 0, scale: 0.8 }}
-                  whileInView={isSmallScreen ? undefined : { opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={isSmallScreen ? undefined : { delay: 0.5 }}
-                  whileHover={isSmallScreen ? undefined : { scale: 1.05 }}
-                >
-                  <motion.div className="text-4xl font-extrabold text-cyan-400 mb-2" initial={isSmallScreen ? false : { opacity: 0 }} whileInView={isSmallScreen ? undefined : { opacity: 1 }} viewport={{ once: true }}>
+                <div>
+                  <div className="text-4xl font-extrabold text-cyan-400 mb-2">
                     99.9%
-                  </motion.div>
-                  <motion.div
-                    className="text-sm text-slate-400 font-medium"
-                    initial={isSmallScreen ? false : { opacity: 0, y: 10 }}
-                    whileInView={isSmallScreen ? undefined : { opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={isSmallScreen ? undefined : { delay: 0.6 }}
-                  >
+                  </div>
+                  <div className="text-sm text-slate-400 font-medium">
                     Uptime SLA
-                  </motion.div>
-                </motion.div>
-                <motion.div
-                  initial={isSmallScreen ? false : { opacity: 0, scale: 0.8 }}
-                  whileInView={isSmallScreen ? undefined : { opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={isSmallScreen ? undefined : { delay: 0.6 }}
-                  whileHover={isSmallScreen ? undefined : { scale: 1.05 }}
-                >
-                  <motion.div className="text-4xl font-extrabold text-indigo-400 mb-2" initial={isSmallScreen ? false : { opacity: 0 }} whileInView={isSmallScreen ? undefined : { opacity: 1 }} viewport={{ once: true }}>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-4xl font-extrabold text-indigo-400 mb-2">
                     100%
-                  </motion.div>
-                  <motion.div
-                    className="text-sm text-slate-400 font-medium"
-                    initial={isSmallScreen ? false : { opacity: 0, y: 10 }}
-                    whileInView={isSmallScreen ? undefined : { opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={isSmallScreen ? undefined : { delay: 0.7 }}
-                  >
+                  </div>
+                  <div className="text-sm text-slate-400 font-medium">
                     Audit-Ready
-                  </motion.div>
-                </motion.div>
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
 
