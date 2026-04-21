@@ -2,19 +2,15 @@ import { useEffect, useRef, useState } from "react";
 
 export function useSectionActivity<T extends HTMLElement = HTMLElement>() {
   const ref = useRef<T | null>(null);
-  const [isNear, setIsNear] = useState(true);
-  const [isActive, setIsActive] = useState(true);
-  const [hasEntered, setHasEntered] = useState(true);
+  const [isNear, setIsNear] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node || typeof IntersectionObserver === "undefined") {
       return;
     }
-
-    setIsNear(false);
-    setIsActive(false);
-    setHasEntered(false);
 
     const nearObserver = new IntersectionObserver(
       ([entry]) => {

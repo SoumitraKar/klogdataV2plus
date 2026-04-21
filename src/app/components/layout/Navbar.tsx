@@ -25,7 +25,7 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
     { name: "Products", href: "#products" },
     { name: "Services", href: "#services" },
   ];
-  const glassButtonClassName = "relative overflow-hidden rounded-full border border-white/15 bg-gradient-to-b from-white/16 via-white/8 to-white/4 text-white backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-10px_24px_rgba(15,23,42,0.35),0_10px_30px_rgba(2,6,23,0.18)] transition-all duration-300 hover:border-white/25 hover:from-white/20 hover:via-white/10 hover:to-white/6 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-10px_24px_rgba(15,23,42,0.32),0_14px_36px_rgba(2,6,23,0.24)]";
+  const glassButtonClassName = "relative overflow-hidden rounded-full border border-white/15 bg-gradient-to-b from-white/16 via-white/8 to-white/4 text-white md:backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.22),inset_0_-10px_24px_rgba(15,23,42,0.35),0_10px_30px_rgba(2,6,23,0.18)] transition-all duration-300 hover:border-white/25 hover:from-white/20 hover:via-white/10 hover:to-white/6 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),inset_0_-10px_24px_rgba(15,23,42,0.32),0_14px_36px_rgba(2,6,23,0.24)]";
 
   const handleNavClick = (href: string) => {
     setMobileMenuOpen(false);
@@ -46,7 +46,7 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 border-b border-transparent ${
-        scrolled ? "bg-slate-950/80 backdrop-blur-md border-white/10 shadow-lg" : "bg-transparent"
+        scrolled ? "bg-slate-950/95 md:bg-slate-950/80 md:backdrop-blur-md border-white/10 shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
