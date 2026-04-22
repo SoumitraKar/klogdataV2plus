@@ -1,6 +1,5 @@
 import { Suspense, lazy, useEffect, useState, type CSSProperties } from "react";
 import { useOutletContext } from "react-router";
-import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 
 import { ScrollProgress } from "../components/ScrollProgress";
@@ -137,6 +136,9 @@ export function Home() {
   const heroEffectsEnabled = decorativeEffectsReady && heroSection.isNear;
   const heroParticles = isSmallScreen ? HERO_PARTICLES.slice(0, 3) : HERO_PARTICLES;
   const heroStreamCount = isSmallScreen ? 2 : 4;
+
+  const createAnimatedStyle = (vars: Record<string, string | number>): CSSProperties => vars as CSSProperties;
+
   return (
     <div className="bg-slate-950 text-white min-h-screen">
       <ScrollProgress />
@@ -145,30 +147,25 @@ export function Home() {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950 z-10" />
           <>
-            <motion.div
+            <div
               className={`absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 rounded-full z-0 mix-blend-screen ${isSmallScreen ? "w-[58vw] h-[58vw] bg-cyan-500/30 blur-[90px]" : "w-[50vw] h-[50vw] bg-cyan-500/40 blur-[130px]"}`}
-              animate={heroEffectsEnabled ? {
-                scale: [1, 1.4, 1],
-                opacity: isSmallScreen ? [0.35, 0.55, 0.35] : [0.5, 0.8, 0.5],
-                x: [0, 50, 0],
-                y: [0, 30, 0],
-              } : undefined}
-              transition={heroEffectsEnabled ? { duration: 15, repeat: Infinity, ease: "easeInOut" } : undefined}
+              style={createAnimatedStyle({
+                animationDuration: "15s",
+                animationName: "heroBlobDriftA",
+                animationPlayState: heroEffectsEnabled ? "running" : "paused",
+              })}
             />
-            <motion.div
+            <div
               className={`absolute bottom-1/4 right-1/4 rounded-full z-0 mix-blend-screen ${isSmallScreen ? "w-[52vw] h-[52vw] bg-indigo-500/28 blur-[82px]" : "w-[40vw] h-[40vw] bg-indigo-500/40 blur-[120px]"}`}
-              animate={heroEffectsEnabled ? {
-                scale: [1, 1.5, 1],
-                opacity: isSmallScreen ? [0.3, 0.5, 0.3] : [0.4, 0.9, 0.4],
-                x: [0, -40, 0],
-                y: [0, -40, 0],
-              } : undefined}
-              transition={heroEffectsEnabled ? { duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 } : undefined}
+              style={createAnimatedStyle({
+                animationDelay: "2s",
+                animationDuration: "12s",
+                animationName: "heroBlobDriftB",
+                animationPlayState: heroEffectsEnabled ? "running" : "paused",
+              })}
             />
-            <motion.div
+            <div
               className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-0 mix-blend-screen ${isSmallScreen ? "w-[74vw] h-[42vw] bg-purple-500/22 blur-[92px]" : "w-[60vw] h-[30vw] bg-purple-500/30 blur-[140px]"}`}
-              animate={undefined}
-              transition={undefined}
             />
           </>
 
@@ -180,23 +177,24 @@ export function Home() {
             const isBlue = i % 2 === 0;
 
             return (
-              <motion.div
+              <div
                 key={`stream-${i}`}
-                className={`absolute h-[2px] w-1/4 z-0 ${isBlue ? "bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee]" : "bg-gradient-to-r from-transparent via-indigo-500 to-transparent shadow-[0_0_15px_#6366f1]"}`}
-                style={{ top: `${top}%`, left: "-50%", opacity }}
-                animate={{ left: ["-50%", "150%"] }}
-                transition={{ duration, repeat: Infinity, ease: "linear", delay }}
+                className={`hero-stream absolute left-[-50%] z-0 h-[2px] w-1/4 ${isBlue ? "bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#22d3ee]" : "bg-gradient-to-r from-transparent via-indigo-500 to-transparent shadow-[0_0_15px_#6366f1]"}`}
+                style={createAnimatedStyle({
+                  "--stream-delay": `${delay}s`,
+                  "--stream-duration": `${duration}s`,
+                  opacity,
+                  top: `${top}%`,
+                })}
               />
             );
           })}
 
           <div className="absolute top-1/2 left-1/2 hidden h-[120vw] w-[120vw] -translate-x-1/2 -translate-y-1/2 items-center justify-center pointer-events-none z-0 md:flex md:h-[80vw] md:w-[80vw]">
             {!isSmallScreen ? (
-              <motion.div
+              <div
                 className="absolute w-1/2 h-1/2 origin-bottom-right rounded-tl-full bg-gradient-to-br from-cyan-500/10 to-transparent border-t-2 border-l-2 border-cyan-400/40 blur-[1px]"
                 style={{ bottom: "50%", right: "50%" }}
-                animate={undefined}
-                transition={undefined}
               />
             ) : null}
 
@@ -213,88 +211,52 @@ export function Home() {
             const isCyan = i % 3 !== 0;
 
             return (
-              <motion.div
+              <div
                 key={`particle-${i}`}
-                className={`absolute w-1.5 h-1.5 rounded-full z-0 ${isCyan ? "bg-cyan-400 shadow-[0_0_10px_#22d3ee]" : "bg-indigo-400 shadow-[0_0_10px_#818cf8]"}`}
-                style={{ left: `${particle.left}%`, top: `${particle.top}%` }}
-                animate={{
-                  y: [0, -120, 0],
-                  x: [0, particle.x, 0],
-                  opacity: [0, 1, 0],
-                  scale: [0, 2, 0],
-                }}
-                transition={{ duration: particle.duration + 2, repeat: Infinity, ease: "easeInOut", delay: particle.delay }}
+                className={`hero-particle absolute z-0 h-1.5 w-1.5 rounded-full ${isCyan ? "bg-cyan-400 shadow-[0_0_10px_#22d3ee]" : "bg-indigo-400 shadow-[0_0_10px_#818cf8]"}`}
+                style={createAnimatedStyle({
+                  "--particle-delay": `${particle.delay}s`,
+                  "--particle-duration": `${particle.duration + 2}s`,
+                  "--particle-x": `${particle.x}px`,
+                  left: `${particle.left}%`,
+                  top: `${particle.top}%`,
+                })}
               />
             );
           })}
         </div>
 
-        <motion.div className="relative z-20 max-w-7xl mx-auto px-6 text-center mt-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center"
-          >
-            <motion.h1
-              className="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-8 leading-tight"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.8 }}
-            >
+        <div className="relative z-20 mt-12 max-w-7xl px-6 text-center mx-auto">
+          <div className="flex flex-col items-center hero-reveal">
+            <h1 className="hero-reveal hero-reveal-delay-1 mb-8 text-5xl font-extrabold leading-tight tracking-tight md:text-7xl lg:text-8xl">
               Data-Driven <br className="hidden md:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff4f4f] to-[#df9dff]">
                 Operational Intelligence
               </span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              className="text-lg md:text-2xl text-slate-400 max-w-3xl mx-auto mb-12 font-light"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
+            <p className="hero-reveal hero-reveal-delay-2 mb-12 max-w-3xl mx-auto text-lg font-light text-slate-400 md:text-2xl">
               Klogdata engineers the operating layer for institutions and enterprises. We unite isolated domains—academics, finance, and administration—into seamless platforms.
-            </motion.p>
+            </p>
 
-            <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              <motion.button className="w-full cursor-pointer sm:w-auto px-8 py-4 rounded-full font-bold bg-white text-slate-900 flex items-center justify-center gap-2 group relative overflow-hidden">
-                <motion.span
-                  className="relative z-10 inline-block transition-transform duration-200 group-hover:scale-110"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
-                >
+            <div className="hero-reveal hero-reveal-delay-3 flex flex-col items-center justify-center gap-6 sm:flex-row">
+              <button className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 py-4 font-bold text-slate-900 sm:w-auto">
+                <span className="relative z-10 inline-block transition-transform duration-200 group-hover:scale-110">
                   Explore Products
-                </motion.span>
+                </span>
                 <ArrowRight className="w-5 h-5 relative z-10 transition-transform duration-200 group-hover:translate-x-1.5 group-hover:scale-110" />
-              </motion.button>
+              </button>
 
-              <motion.button
+              <button
                 className={`w-full cursor-pointer sm:w-auto px-8 py-4 rounded-full font-bold border border-white/10 text-white relative overflow-hidden group transition-colors duration-200 hover:bg-white/10 ${isSmallScreen ? "bg-white/10" : "bg-white/5 backdrop-blur-md"}`}
               >
-                <motion.span
-                  className="relative z-10 inline-block transition-transform duration-200 group-hover:scale-110"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4 }}
-                >
+                <span className="relative z-10 inline-block transition-transform duration-200 group-hover:scale-110">
                   Our Services
-                </motion.span>
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
 
       {deferredSectionsReady ? (

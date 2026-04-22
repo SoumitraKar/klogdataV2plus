@@ -3,8 +3,8 @@ import { Linkedin, Github, ChevronRight, Mail, Phone, X, Lock, Users } from "luc
 import { Link, useLocation, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
-import SoumitraImage from "../../../imports/Soumitra.png";
-import PriyaImage from "../../../imports/Priya.PNG";
+import SoumitraImage from "../../../imports/Soumitra.jpg";
+import PriyaImage from "../../../imports/Priya.jpg";
 import { requestDeferredSections } from "../../utils/deferredSections";
 
 type FlippedState = "contact" | "careers" | "about" | "company" | null;

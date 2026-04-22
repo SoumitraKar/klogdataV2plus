@@ -1,6 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Outlet } from "react-router";
-import { Toaster } from "sonner";
 import { Navbar } from "./Navbar";
 import { useSectionActivity } from "../useSectionActivity";
 
@@ -14,6 +13,11 @@ const ConsultationDialog = lazy(async () => {
   return { default: module.ConsultationDialog };
 });
 
+const Toaster = lazy(async () => {
+  const module = await import("sonner");
+  return { default: module.Toaster };
+});
+
 export type RootOutletContext = {
   openConsultation: () => void;
 };
@@ -21,6 +25,7 @@ export type RootOutletContext = {
 export function Root() {
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const [isFooterReady, setIsFooterReady] = useState(false);
+  const [isToasterReady, setIsToasterReady] = useState(false);
   const footerTrigger = useSectionActivity<HTMLDivElement>();
 
   useEffect(() => {
@@ -28,6 +33,12 @@ export function Root() {
       setIsFooterReady(true);
     }
   }, [footerTrigger.hasEntered]);
+
+  useEffect(() => {
+    if (isConsultationOpen) {
+      setIsToasterReady(true);
+    }
+  }, [isConsultationOpen]);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 selection:bg-cyan-500/30 font-sans flex flex-col">
@@ -46,17 +57,21 @@ export function Root() {
           <ConsultationDialog open={isConsultationOpen} onOpenChange={setIsConsultationOpen} />
         </Suspense>
       ) : null}
-      <Toaster
-        position="bottom-right"
-        richColors
-        duration={5000}
-        toastOptions={{
-          classNames: {
-            toast: "border border-slate-700 bg-slate-900 text-slate-100 shadow-2xl",
-            title: "text-sm font-medium leading-6",
-          },
-        }}
-      />
+      {isToasterReady ? (
+        <Suspense fallback={null}>
+          <Toaster
+            position="bottom-right"
+            richColors
+            duration={5000}
+            toastOptions={{
+              classNames: {
+                toast: "border border-slate-700 bg-slate-900 text-slate-100 shadow-2xl",
+                title: "text-sm font-medium leading-6",
+              },
+            }}
+          />
+        </Suspense>
+      ) : null}
     </div>
   );
 }

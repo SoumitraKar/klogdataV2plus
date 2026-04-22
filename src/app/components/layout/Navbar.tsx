@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
@@ -12,6 +11,8 @@ type NavbarProps = {
 export function Navbar({ onOpenConsultation }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuMounted, setMobileMenuMounted] = useState(false);
+  const closeTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +20,31 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+
+    if (mobileMenuOpen) {
+      setMobileMenuMounted(true);
+      return;
+    }
+
+    if (mobileMenuMounted) {
+      closeTimerRef.current = window.setTimeout(() => {
+        setMobileMenuMounted(false);
+        closeTimerRef.current = null;
+      }, 220);
+    }
+  }, [mobileMenuMounted, mobileMenuOpen]);
+
+  useEffect(() => () => {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+    }
   }, []);
 
   const navLinks = [
@@ -76,13 +102,9 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group relative z-50 cursor-pointer">
-          <motion.div 
-            className="w-10 h-10 flex items-center justify-center"
-            whileHover={{ scale: 1.1 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div className="flex h-10 w-10 items-center justify-center transition-transform duration-500 group-hover:scale-110">
             <img src={LogoImage} alt="Klogdata Logo" className="w-full h-full object-contain" />
-          </motion.div>
+          </div>
           <span className="brand-wordmark text-xl font-bold">
             Klog<span className="brand-wordmark-accent">data</span>.
           </span>
@@ -91,21 +113,14 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <motion.button
+            <button
               key={link.name}
               onClick={() => handleNavClick(link.href)}
-              className="text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors relative cursor-pointer"
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
+              className="group relative cursor-pointer text-sm font-medium text-slate-300 transition-all duration-200 hover:-translate-y-0.5 hover:text-cyan-400 active:scale-95"
             >
               {link.name}
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan-400 to-indigo-500"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.button>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-cyan-400 to-indigo-500 transition-transform duration-300 group-hover:scale-x-100" />
+            </button>
           ))}
           <button onClick={onOpenConsultation} className={`${consultationButtonClassName} cursor-pointer`}>
             Schedule a Consultation
@@ -122,14 +137,13 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
       </div>
 
       {/* Mobile Nav */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-0 left-0 right-0 bg-slate-900 border-b border-white/10 pt-20 pb-6 px-6 flex flex-col gap-4 shadow-2xl md:hidden"
-          >
+      {mobileMenuMounted ? (
+        <div
+          className={`absolute top-0 left-0 right-0 border-b border-white/10 bg-slate-900 px-6 pt-20 pb-6 shadow-2xl transition-all duration-200 md:hidden ${
+            mobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-5 opacity-0"
+          }`}
+        >
+          <div className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <button
                 key={link.name}
@@ -148,9 +162,9 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
             >
               Schedule a Consultation
             </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }

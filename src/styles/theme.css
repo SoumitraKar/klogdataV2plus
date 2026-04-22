@@ -216,3 +216,99 @@
   transform: translateX(360%) rotate(14deg);
   transition: transform 700ms ease-out, opacity 700ms ease-out;
 }
+
+.hero-reveal {
+  animation: heroReveal 0.8s ease-out both;
+}
+
+.hero-reveal-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.hero-reveal-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.hero-reveal-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.hero-stream {
+  animation: heroStream var(--stream-duration, 4s) linear infinite;
+  animation-delay: var(--stream-delay, 0s);
+}
+
+.hero-particle {
+  animation: heroParticleFloat var(--particle-duration, 5s) ease-in-out infinite;
+  animation-delay: var(--particle-delay, 0s);
+  opacity: 0;
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroBlobDriftA {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1) translate3d(0, 0, 0);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.4) translate3d(50px, 30px, 0);
+  }
+}
+
+@keyframes heroBlobDriftB {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: scale(1.5) translate3d(-40px, -40px, 0);
+  }
+}
+
+@keyframes heroStream {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(200vw);
+  }
+}
+
+@keyframes heroParticleFloat {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate3d(var(--particle-x, 60px), -120px, 0) scale(2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal,
+  .hero-stream,
+  .hero-particle {
+    animation: none !important;
+  }
+}
