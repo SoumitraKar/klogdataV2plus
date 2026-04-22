@@ -120,23 +120,6 @@ export function HomeDeferredSections({
           ) : null}
         </div>
 
-        {productEffectsEnabled && <motion.div
-          className="absolute -left-[20%] top-0 w-[50%] h-[100%] bg-gradient-to-br from-cyan-500/10 to-transparent blur-[120px] pointer-events-none"
-          animate={{
-            x: [0, 50, 0],
-            opacity: [0.1, 0.3, 0.1],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />}
-        {productEffectsEnabled && <motion.div
-          className="absolute -right-[20%] bottom-0 w-[50%] h-[100%] bg-gradient-to-tl from-indigo-500/10 to-transparent blur-[120px] pointer-events-none"
-          animate={{
-            x: [0, -50, 0],
-            opacity: [0.1, 0.3, 0.1],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />}
-
         {productEffectsEnabled && productParticles.map((particle, i) => (
           <motion.div
             key={`product-particle-${i}`}
@@ -362,23 +345,6 @@ export function HomeDeferredSections({
             />
           ) : null}
         </div>
-
-        {serviceEffectsEnabled && <motion.div
-          className="absolute -left-[20%] top-0 w-[50%] h-[100%] bg-gradient-to-br from-orange-400/20 to-transparent blur-[120px] pointer-events-none"
-          animate={{
-            x: [0, 50, 0],
-            opacity: [0.1, 0.3, 0.1],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />}
-        {serviceEffectsEnabled && <motion.div
-          className="absolute -right-[20%] bottom-0 w-[50%] h-[100%] bg-gradient-to-tl from-orange-500/20 to-transparent blur-[120px] pointer-events-none"
-          animate={{
-            x: [0, -50, 0],
-            opacity: [0.1, 0.3, 0.1],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />}
 
         {serviceEffectsEnabled && serviceParticles.map((particle, i) => (
           <motion.div

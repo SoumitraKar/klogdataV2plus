@@ -68,9 +68,6 @@ export function Footer() {
     <div className="w-full relative z-20">
       <motion.footer ref={footerRef} className="relative w-full">
         <div className="relative bg-slate-950 pt-32 pb-8 overflow-hidden border-t border-cyan-900/30 w-full h-full">
-          {/* Tech Grid Background */}
-          <div className="absolute inset-0 z-0 opacity-20 bg-[linear-gradient(to_right,#06b6d41a_1px,transparent_1px),linear-gradient(to_bottom,#06b6d41a_1px,transparent_1px)] bg-[size:3rem_3rem]" />
-
           <div className="relative z-10 max-w-7xl mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-24">
               {/* Brand Column */}

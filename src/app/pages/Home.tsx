@@ -134,15 +134,6 @@ export function Home() {
       <section ref={heroSection.ref} className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-slate-950">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/60 to-slate-950 z-10" />
-          <motion.div
-            className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-[1] ${isSmallScreen ? "h-[82vw] w-[82vw] bg-[radial-gradient(circle,rgba(34,211,238,0.2)_0%,rgba(99,102,241,0.16)_42%,rgba(15,23,42,0)_72%)]" : "h-[62vw] w-[62vw] bg-[radial-gradient(circle,rgba(34,211,238,0.24)_0%,rgba(99,102,241,0.18)_38%,rgba(168,85,247,0.12)_56%,rgba(15,23,42,0)_74%)]"}`}
-            animate={heroEffectsEnabled ? {
-              scale: isSmallScreen ? [1, 1.05, 1] : [1, 1.08, 1],
-              opacity: isSmallScreen ? [0.7, 0.95, 0.7] : [0.75, 1, 0.75],
-            } : undefined}
-            transition={heroEffectsEnabled ? { duration: 10, repeat: Infinity, ease: "easeInOut" } : undefined}
-          />
-
           <>
             <motion.div
               className={`absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 rounded-full z-0 mix-blend-screen ${isSmallScreen ? "w-[58vw] h-[58vw] bg-cyan-500/30 blur-[90px]" : "w-[50vw] h-[50vw] bg-cyan-500/40 blur-[130px]"}`}
@@ -169,18 +160,6 @@ export function Home() {
               animate={undefined}
               transition={undefined}
             />
-            {overlayDetailsReady ? (
-              <motion.div
-                className={`absolute inset-0 z-[5] ${isSmallScreen ? "opacity-40" : "opacity-60"}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isSmallScreen ? 0.25 : 0.35 }}
-                transition={{ duration: 1.4 }}
-              >
-                <div className={`absolute inset-0 bg-[linear-gradient(to_right,rgba(6,182,212,0.15)_1px,transparent_1px),linear-gradient(to_bottom,rgba(6,182,212,0.15)_1px,transparent_1px)] ${isSmallScreen ? "bg-[size:3.5rem_3.5rem]" : "bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_20%,transparent_100%)]"}`} />
-                <div className={`absolute inset-0 bg-[linear-gradient(to_right,rgba(99,102,241,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,102,241,0.1)_1px,transparent_1px)] ${isSmallScreen ? "bg-[size:1.25rem_1.25rem] opacity-35" : "bg-[size:1rem_1rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_20%,transparent_100%)] opacity-50"}`}
-                />
-              </motion.div>
-            ) : null}
           </>
 
           {heroEffectsEnabled && [...Array(heroStreamCount)].map((_, i) => {
