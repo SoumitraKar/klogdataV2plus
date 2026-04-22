@@ -7,20 +7,19 @@ import { ScrollProgress } from "../components/ScrollProgress";
 import { useSectionActivity } from "../components/useSectionActivity";
 import { useIsMobile } from "../components/ui/use-mobile";
 import type { RootOutletContext } from "../components/layout/Root";
+import { scheduleIdleWork } from "../utils/schedule";
 
-const loadHomeDeferredSections = () => import("./HomeDeferredSections");
+let homeDeferredSectionsPromise: Promise<typeof import("./HomeDeferredSections")> | null = null;
+
+const loadHomeDeferredSections = () => {
+  homeDeferredSectionsPromise ??= import("./HomeDeferredSections");
+  return homeDeferredSectionsPromise;
+};
 
 const HomeDeferredSections = lazy(async () => {
   const module = await loadHomeDeferredSections();
   return { default: module.HomeDeferredSections };
 });
-
-const EDU_IMG = new URL("../../imports/eduklog_BG.PNG", import.meta.url).href;
-const EDU_IMG_MOBILE = new URL("../../imports/eduklog_BG-mobile.jpg", import.meta.url).href;
-const FIN_IMG = new URL("../../imports/caKlog_BG.webp", import.meta.url).href;
-const FIN_IMG_MOBILE = new URL("../../imports/caKlog_BG-mobile.jpg", import.meta.url).href;
-const STATS_BG_IMG = new URL("../../imports/photo-1626908013943-df94de54984c.jpeg", import.meta.url).href;
-const STATS_BG_IMG_MOBILE = new URL("../../imports/photo-1626908013943-df94de54984c-mobile.jpg", import.meta.url).href;
 
 const createParticleSpecs = (
   count: number,
@@ -60,40 +59,26 @@ export function Home() {
 
   useEffect(() => {
     let overlayTimeoutId = 0;
-    let effectsTimeoutId = 0;
-    let idleId: number | null = null;
     const overlayDelay = isMobile ? 900 : 250;
     const effectsDelay = isMobile ? 1800 : 700;
     const idleTimeout = isMobile ? 2200 : 1200;
-
-    const enableEffects = () => setDecorativeEffectsReady(true);
-    const idleWindow = window as Window & typeof globalThis & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
 
     setOverlayDetailsReady(false);
     setDecorativeEffectsReady(false);
     overlayTimeoutId = globalThis.setTimeout(() => setOverlayDetailsReady(true), overlayDelay);
 
-    if (!isMobile && idleWindow.requestIdleCallback) {
-      idleId = idleWindow.requestIdleCallback(enableEffects, { timeout: idleTimeout });
-    } else {
-      effectsTimeoutId = globalThis.setTimeout(enableEffects, effectsDelay);
-    }
+    const cancelIdleWork = scheduleIdleWork(() => setDecorativeEffectsReady(true), {
+      fallbackDelay: effectsDelay,
+      preferTimeout: isMobile,
+      timeout: idleTimeout,
+    });
 
     return () => {
-      if (idleId !== null && idleWindow.cancelIdleCallback) {
-        idleWindow.cancelIdleCallback(idleId);
-      }
-
       if (overlayTimeoutId) {
         globalThis.clearTimeout(overlayTimeoutId);
       }
 
-      if (effectsTimeoutId) {
-        globalThis.clearTimeout(effectsTimeoutId);
-      }
+      cancelIdleWork();
     };
   }, [isMobile]);
 
@@ -142,10 +127,6 @@ export function Home() {
   const heroEffectsEnabled = decorativeEffectsReady && heroSection.isNear;
   const heroParticles = isSmallScreen ? HERO_PARTICLES.slice(0, 3) : HERO_PARTICLES;
   const heroStreamCount = isSmallScreen ? 2 : 4;
-  const productImage = isSmallScreen ? EDU_IMG_MOBILE : EDU_IMG;
-  const financeImage = isSmallScreen ? FIN_IMG_MOBILE : FIN_IMG;
-  const statsBackgroundImage = isSmallScreen ? STATS_BG_IMG_MOBILE : STATS_BG_IMG;
-
   return (
     <div className="bg-slate-950 text-white min-h-screen">
       <ScrollProgress />
@@ -333,12 +314,9 @@ export function Home() {
             ctaImageReady={overlayDetailsReady}
             decorativeEffectsReady={decorativeEffectsReady}
             deferredSectionStyle={deferredSectionStyle}
-            financeImage={financeImage}
             isSmallScreen={isSmallScreen}
             openConsultation={openConsultation}
             overlayDetailsReady={overlayDetailsReady}
-            productImage={productImage}
-            statsBackgroundImage={statsBackgroundImage}
           />
         </Suspense>
       ) : null}

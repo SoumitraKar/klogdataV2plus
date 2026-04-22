@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import { Outlet } from "react-router";
 import { Toaster } from "sonner";
 import { Navbar } from "./Navbar";
+import { scheduleIdleWork } from "../../utils/schedule";
 
 const Footer = lazy(async () => {
   const module = await import("./Footer");
@@ -22,30 +23,10 @@ export function Root() {
   const [isFooterReady, setIsFooterReady] = useState(false);
 
   useEffect(() => {
-    let timeoutId = 0;
-    let idleId: number | null = null;
-
-    const enableFooter = () => setIsFooterReady(true);
-    const idleWindow = window as Window & typeof globalThis & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-      cancelIdleCallback?: (handle: number) => void;
-    };
-
-    if (idleWindow.requestIdleCallback) {
-      idleId = idleWindow.requestIdleCallback(enableFooter, { timeout: 1500 });
-    } else {
-      timeoutId = globalThis.setTimeout(enableFooter, 900);
-    }
-
-    return () => {
-      if (idleId !== null && idleWindow.cancelIdleCallback) {
-        idleWindow.cancelIdleCallback(idleId);
-      }
-
-      if (timeoutId) {
-        globalThis.clearTimeout(timeoutId);
-      }
-    };
+    return scheduleIdleWork(() => setIsFooterReady(true), {
+      fallbackDelay: 900,
+      timeout: 1500,
+    });
   }, []);
 
   return (

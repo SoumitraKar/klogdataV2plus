@@ -15,16 +15,20 @@ import {
 
 import { useSectionActivity } from "../components/useSectionActivity";
 
+const EDU_IMG = new URL("../../imports/eduklog_BG.PNG", import.meta.url).href;
+const EDU_IMG_MOBILE = new URL("../../imports/eduklog_BG-mobile.jpg", import.meta.url).href;
+const FIN_IMG = new URL("../../imports/caKlog_BG.webp", import.meta.url).href;
+const FIN_IMG_MOBILE = new URL("../../imports/caKlog_BG-mobile.jpg", import.meta.url).href;
+const STATS_BG_IMG = new URL("../../imports/photo-1626908013943-df94de54984c.jpeg", import.meta.url).href;
+const STATS_BG_IMG_MOBILE = new URL("../../imports/photo-1626908013943-df94de54984c-mobile.jpg", import.meta.url).href;
+
 type HomeDeferredSectionsProps = {
   ctaImageReady: boolean;
   decorativeEffectsReady: boolean;
   deferredSectionStyle?: React.CSSProperties;
-  financeImage: string;
   isSmallScreen: boolean;
   openConsultation: () => void;
   overlayDetailsReady: boolean;
-  productImage: string;
-  statsBackgroundImage: string;
 };
 
 const createParticleSpecs = (
@@ -65,12 +69,9 @@ export function HomeDeferredSections({
   ctaImageReady,
   decorativeEffectsReady,
   deferredSectionStyle,
-  financeImage,
   isSmallScreen,
   openConsultation,
   overlayDetailsReady,
-  productImage,
-  statsBackgroundImage,
 }: HomeDeferredSectionsProps) {
   const productsSection = useSectionActivity<HTMLElement>();
   const servicesSection = useSectionActivity<HTMLElement>();
@@ -84,6 +85,9 @@ export function HomeDeferredSections({
   const productParticles = isSmallScreen ? [] : PRODUCT_PARTICLES;
   const serviceParticles = isSmallScreen ? [] : SERVICE_PARTICLES;
   const ctaParticles = isSmallScreen ? [] : CTA_PARTICLES;
+  const productImage = isSmallScreen ? EDU_IMG_MOBILE : EDU_IMG;
+  const financeImage = isSmallScreen ? FIN_IMG_MOBILE : FIN_IMG;
+  const statsBackgroundImage = isSmallScreen ? STATS_BG_IMG_MOBILE : STATS_BG_IMG;
   const servicesGridProps = isSmallScreen
     ? {
         initial: { opacity: 1 },

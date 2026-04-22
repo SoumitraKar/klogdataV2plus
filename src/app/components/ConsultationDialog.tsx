@@ -17,7 +17,7 @@ type ConsultationDialogProps = {
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_ALLOWED_PATTERN = /^[+\d\s()-]+$/;
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
-const WEB3FORMS_ACCESS_KEY = "62c27673-a0b5-47ec-aed1-ad3526e52c0c";
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim() ?? "";
 
 function getEmailError(value: string) {
   const trimmedValue = value.trim();
@@ -120,6 +120,11 @@ export function ConsultationDialog({ open, onOpenChange }: ConsultationDialogPro
     }
 
     if (hasError) {
+      return;
+    }
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      setSubmitError("The enquiry form is not configured yet. Please try again later.");
       return;
     }
 

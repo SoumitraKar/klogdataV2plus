@@ -8,4 +8,10 @@
   Run `npm i` to install the dependencies.
 
   Run `npm run dev` to start the development server.
+
+  ## Environment variables
+
+  Create a `.env` file in the project root with:
+
+  `VITE_WEB3FORMS_ACCESS_KEY=your-web3forms-access-key`
   
