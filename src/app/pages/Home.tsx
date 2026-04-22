@@ -7,6 +7,7 @@ import { ScrollProgress } from "../components/ScrollProgress";
 import { useSectionActivity } from "../components/useSectionActivity";
 import { useIsMobile } from "../components/ui/use-mobile";
 import type { RootOutletContext } from "../components/layout/Root";
+import { REQUEST_DEFERRED_SECTIONS_EVENT } from "../utils/deferredSections";
 import { scheduleIdleWork } from "../utils/schedule";
 
 let homeDeferredSectionsPromise: Promise<typeof import("./HomeDeferredSections")> | null = null;
@@ -83,9 +84,6 @@ export function Home() {
   }, [isMobile]);
 
   useEffect(() => {
-    let timeoutId = 0;
-    let frameOneId = 0;
-    let frameTwoId = 0;
     let cancelled = false;
 
     const enableDeferredSections = () => {
@@ -104,26 +102,38 @@ export function Home() {
     }
 
     setDeferredSectionsReady(false);
-    frameOneId = window.requestAnimationFrame(() => {
-      frameTwoId = window.requestAnimationFrame(enableDeferredSections);
-    });
-    timeoutId = window.setTimeout(enableDeferredSections, 600);
+
+    const onIntent = () => {
+      enableDeferredSections();
+      cleanup();
+    };
+
+    const cleanup = () => {
+      window.removeEventListener(REQUEST_DEFERRED_SECTIONS_EVENT, onIntent);
+      window.removeEventListener("keydown", onIntent);
+      window.removeEventListener("pointerdown", onIntent);
+      window.removeEventListener("touchstart", onIntent);
+      window.removeEventListener("wheel", onIntent);
+    };
+
+    window.addEventListener(REQUEST_DEFERRED_SECTIONS_EVENT, onIntent);
+    window.addEventListener("keydown", onIntent, { once: true });
+    window.addEventListener("pointerdown", onIntent, { once: true, passive: true });
+    window.addEventListener("touchstart", onIntent, { once: true, passive: true });
+    window.addEventListener("wheel", onIntent, { once: true, passive: true });
+
+    if (window.location.hash) {
+      enableDeferredSections();
+      cleanup();
+    }
 
     return () => {
       cancelled = true;
-      if (frameOneId) {
-        window.cancelAnimationFrame(frameOneId);
-      }
-      if (frameTwoId) {
-        window.cancelAnimationFrame(frameTwoId);
-      }
-      if (timeoutId) {
-        window.clearTimeout(timeoutId);
-      }
+      cleanup();
     };
   }, [isSmallScreen]);
 
-  const deferredSectionStyle = isMobile ? undefined : DEFERRED_SECTION_STYLE;
+  const deferredSectionStyle = DEFERRED_SECTION_STYLE;
   const heroEffectsEnabled = decorativeEffectsReady && heroSection.isNear;
   const heroParticles = isSmallScreen ? HERO_PARTICLES.slice(0, 3) : HERO_PARTICLES;
   const heroStreamCount = isSmallScreen ? 2 : 4;
@@ -180,7 +190,7 @@ export function Home() {
             );
           })}
 
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] md:w-[80vw] md:h-[80vw] flex items-center justify-center pointer-events-none z-0">
+          <div className="absolute top-1/2 left-1/2 hidden h-[120vw] w-[120vw] -translate-x-1/2 -translate-y-1/2 items-center justify-center pointer-events-none z-0 md:flex md:h-[80vw] md:w-[80vw]">
             {!isSmallScreen ? (
               <motion.div
                 className="absolute w-1/2 h-1/2 origin-bottom-right rounded-tl-full bg-gradient-to-br from-cyan-500/10 to-transparent border-t-2 border-l-2 border-cyan-400/40 blur-[1px]"

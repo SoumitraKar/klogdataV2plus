@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
 import SoumitraImage from "../../../imports/Soumitra.png";
 import PriyaImage from "../../../imports/Priya.PNG";
+import { requestDeferredSections } from "../../utils/deferredSections";
 
 type FlippedState = "contact" | "careers" | "about" | "company" | null;
 
@@ -29,7 +30,23 @@ export function Footer() {
     };
 
     if (location.pathname === "/") {
-      tryScroll();
+      if (tryScroll()) {
+        return;
+      }
+
+      requestDeferredSections();
+
+      let attempts = 0;
+      const waitForSection = () => {
+        if (tryScroll() || attempts >= 20) {
+          return;
+        }
+
+        attempts += 1;
+        window.setTimeout(waitForSection, 50);
+      };
+
+      window.setTimeout(waitForSection, 0);
       return;
     }
 

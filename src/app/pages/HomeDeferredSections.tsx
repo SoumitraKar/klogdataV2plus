@@ -81,6 +81,7 @@ export function HomeDeferredSections({
   const productEffectsEnabled = !isSmallScreen && decorativeEffectsReady && productsSection.isNear;
   const serviceEffectsEnabled = !isSmallScreen && decorativeEffectsReady && servicesSection.isNear;
   const statsEffectsEnabled = !isSmallScreen && decorativeEffectsReady && statsSection.isNear;
+  const statsRocketRotationEnabled = decorativeEffectsReady && statsSection.isNear;
   const ctaEffectsEnabled = !isSmallScreen && decorativeEffectsReady && ctaSection.isNear;
   const productParticles = isSmallScreen ? [] : PRODUCT_PARTICLES;
   const serviceParticles = isSmallScreen ? [] : SERVICE_PARTICLES;
@@ -587,7 +588,7 @@ export function HomeDeferredSections({
                 <div className="absolute inset-0 flex items-center justify-center">
                   <motion.div
                     className="w-32 h-32 rounded-full bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-[0_0_50px_rgba(34,211,238,0.4)]"
-                    animate={statsEffectsEnabled ? {
+                    animate={statsRocketRotationEnabled ? {
                       boxShadow: [
                         "0 0 50px rgba(34,211,238,0.4)",
                         "0 0 65px rgba(99,102,241,0.45)",
@@ -595,8 +596,8 @@ export function HomeDeferredSections({
                       ],
                       rotate: [0, 360],
                     } : undefined}
-                    transition={statsEffectsEnabled ? {
-                      boxShadow: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                    transition={statsRocketRotationEnabled ? {
+                      boxShadow: { duration: isSmallScreen ? 5 : 4, repeat: Infinity, ease: "easeInOut" },
                       rotate: { duration: 10, repeat: Infinity, ease: "linear" },
                     } : undefined}
                   >

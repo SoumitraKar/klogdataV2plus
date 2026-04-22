@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
+import { requestDeferredSections } from "../../utils/deferredSections";
 
 type NavbarProps = {
   onOpenConsultation: () => void;
@@ -36,10 +37,34 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
     }
 
     if (href.startsWith("#")) {
-      const element = document.getElementById(href.substring(1));
-      if (element) {
+      const targetId = href.substring(1);
+      const scrollToTarget = () => {
+        const element = document.getElementById(targetId);
+        if (!element) {
+          return false;
+        }
+
         element.scrollIntoView({ behavior: "smooth" });
+        return true;
+      };
+
+      if (scrollToTarget()) {
+        return;
       }
+
+      requestDeferredSections();
+
+      let attempts = 0;
+      const waitForTarget = () => {
+        if (scrollToTarget() || attempts >= 20) {
+          return;
+        }
+
+        attempts += 1;
+        window.setTimeout(waitForTarget, 50);
+      };
+
+      window.setTimeout(waitForTarget, 0);
     }
   };
 
