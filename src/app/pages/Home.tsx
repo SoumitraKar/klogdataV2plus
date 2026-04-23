@@ -1,11 +1,9 @@
 import { Suspense, lazy, useEffect, useState, type CSSProperties } from "react";
-import { useOutletContext } from "react-router";
 import { ArrowRight } from "lucide-react";
 
 import { ScrollProgress } from "../components/ScrollProgress";
 import { useSectionActivity } from "../components/useSectionActivity";
 import { useIsMobile } from "../components/ui/use-mobile";
-import type { RootOutletContext } from "../components/layout/Root";
 import { REQUEST_DEFERRED_SECTIONS_EVENT } from "../utils/deferredSections";
 import { scheduleIdleWork } from "../utils/schedule";
 
@@ -48,8 +46,11 @@ const DEFERRED_SECTION_STYLE: CSSProperties = {
   contentVisibility: "auto",
 };
 
-export function Home() {
-  const { openConsultation } = useOutletContext<RootOutletContext>();
+type HomeProps = {
+  openConsultation: () => void;
+};
+
+export function Home({ openConsultation }: HomeProps) {
   const isMobile = useIsMobile();
   const isSmallScreen = isMobile;
   const [overlayDetailsReady, setOverlayDetailsReady] = useState(false);

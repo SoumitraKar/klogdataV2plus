@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
-import { requestDeferredSections } from "../../utils/deferredSections";
+import { scrollToSection, scrollToTop } from "../../utils/navigation";
 
 type NavbarProps = {
   onOpenConsultation: () => void;
@@ -58,39 +57,12 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
     setMobileMenuOpen(false);
 
     if (href === "/") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      scrollToTop();
       return;
     }
 
     if (href.startsWith("#")) {
-      const targetId = href.substring(1);
-      const scrollToTarget = () => {
-        const element = document.getElementById(targetId);
-        if (!element) {
-          return false;
-        }
-
-        element.scrollIntoView({ behavior: "smooth" });
-        return true;
-      };
-
-      if (scrollToTarget()) {
-        return;
-      }
-
-      requestDeferredSections();
-
-      let attempts = 0;
-      const waitForTarget = () => {
-        if (scrollToTarget() || attempts >= 20) {
-          return;
-        }
-
-        attempts += 1;
-        window.setTimeout(waitForTarget, 50);
-      };
-
-      window.setTimeout(waitForTarget, 0);
+      scrollToSection(href.substring(1));
     }
   };
 
@@ -101,14 +73,18 @@ export function Navbar({ onOpenConsultation }: NavbarProps) {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group relative z-50 cursor-pointer">
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="flex items-center gap-2 group relative z-50 cursor-pointer"
+        >
           <div className="flex h-10 w-10 items-center justify-center transition-transform duration-500 group-hover:scale-110">
             <img src={LogoImage} alt="Klogdata Logo" className="w-full h-full object-contain" />
           </div>
           <span className="brand-wordmark text-xl font-bold">
             Klog<span className="brand-wordmark-accent">data</span>.
           </span>
-        </Link>
+        </button>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">

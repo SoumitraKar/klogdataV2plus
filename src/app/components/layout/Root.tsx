@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import { Outlet } from "react-router";
 import { Navbar } from "./Navbar";
 import { useSectionActivity } from "../useSectionActivity";
+import { Home } from "../../pages/Home";
 
 const Footer = lazy(async () => {
   const module = await import("./Footer");
@@ -17,10 +17,6 @@ const Toaster = lazy(async () => {
   const module = await import("sonner");
   return { default: module.Toaster };
 });
-
-export type RootOutletContext = {
-  openConsultation: () => void;
-};
 
 export function Root() {
   const [isConsultationOpen, setIsConsultationOpen] = useState(false);
@@ -44,7 +40,7 @@ export function Root() {
     <div className="min-h-screen bg-slate-950 text-slate-50 selection:bg-cyan-500/30 font-sans flex flex-col">
       <Navbar onOpenConsultation={() => setIsConsultationOpen(true)} />
       <main className="flex-1 relative z-10">
-        <Outlet context={{ openConsultation: () => setIsConsultationOpen(true) }} />
+        <Home openConsultation={() => setIsConsultationOpen(true)} />
       </main>
       <div ref={footerTrigger.ref} className="h-px w-full" aria-hidden="true" />
       {isFooterReady ? (

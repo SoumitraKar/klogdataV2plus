@@ -1,11 +1,10 @@
 import { useRef, useState } from "react";
 import { Linkedin, Github, ChevronRight, Mail, Phone, X, Lock, Users } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import LogoImage from "../../../imports/Klog_Data_Logo_only.png";
 import SoumitraImage from "../../../imports/Soumitra.jpg";
 import PriyaImage from "../../../imports/Priya.jpg";
-import { requestDeferredSections } from "../../utils/deferredSections";
+import { scrollToSection, scrollToTop } from "../../utils/navigation";
 
 type FlippedState = "contact" | "careers" | "about" | "company" | null;
 
@@ -13,57 +12,8 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   const [flippedState, setFlippedState] = useState<FlippedState>(null);
   const footerRef = useRef<HTMLElement | null>(null);
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const isFlipped = flippedState !== null;
-
-  const scrollToSection = (sectionId: "products" | "services") => {
-    const tryScroll = () => {
-      const section = document.getElementById(sectionId);
-      if (!section) {
-        return false;
-      }
-
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-      return true;
-    };
-
-    if (location.pathname === "/") {
-      if (tryScroll()) {
-        return;
-      }
-
-      requestDeferredSections();
-
-      let attempts = 0;
-      const waitForSection = () => {
-        if (tryScroll() || attempts >= 20) {
-          return;
-        }
-
-        attempts += 1;
-        window.setTimeout(waitForSection, 50);
-      };
-
-      window.setTimeout(waitForSection, 0);
-      return;
-    }
-
-    navigate("/");
-
-    let attempts = 0;
-    const waitForSection = () => {
-      if (tryScroll() || attempts >= 20) {
-        return;
-      }
-
-      attempts += 1;
-      window.setTimeout(waitForSection, 50);
-    };
-
-    window.setTimeout(waitForSection, 0);
-  };
 
   const openFooterPanel = (panel: Exclude<FlippedState, null>) => {
     setFlippedState(panel);
@@ -89,7 +39,11 @@ export function Footer() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-24">
               {/* Brand Column */}
               <div className="lg:col-span-5">
-                <Link to="/" className="flex items-center gap-2 group relative z-50 mb-6 w-fit">
+                <button
+                  type="button"
+                  onClick={scrollToTop}
+                  className="flex items-center gap-2 group relative z-50 mb-6 w-fit cursor-pointer"
+                >
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -103,7 +57,7 @@ export function Footer() {
                   <span className="brand-wordmark text-xl font-bold">
                     Klog<span className="brand-wordmark-accent">data</span>.
                   </span>
-                </Link>
+                </button>
                 <motion.p 
                   className="text-slate-400 mb-8 leading-relaxed text-lg"
                   initial={{ opacity: 0, y: 20 }}
