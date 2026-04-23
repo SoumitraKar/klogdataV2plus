@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { ScrollProgress } from "../components/ScrollProgress";
 import { useSectionActivity } from "../components/useSectionActivity";
 import { useIsMobile } from "../components/ui/use-mobile";
+import { scrollToSection } from "../utils/navigation";
 import { REQUEST_DEFERRED_SECTIONS_EVENT } from "../utils/deferredSections";
 import { scheduleIdleWork } from "../utils/schedule";
 
@@ -241,7 +242,11 @@ export function Home({ openConsultation }: HomeProps) {
             </p>
 
             <div className="hero-reveal hero-reveal-delay-3 flex flex-col items-center justify-center gap-6 sm:flex-row">
-              <button className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 py-4 font-bold text-slate-900 sm:w-auto">
+              <button
+                type="button"
+                onClick={() => scrollToSection("products")}
+                className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full bg-white px-8 py-4 font-bold text-slate-900 sm:w-auto"
+              >
                 <span className="relative z-10 inline-block transition-transform duration-200 group-hover:scale-110">
                   Explore Products
                 </span>
@@ -249,6 +254,8 @@ export function Home({ openConsultation }: HomeProps) {
               </button>
 
               <button
+                type="button"
+                onClick={() => scrollToSection("services")}
                 className={`w-full cursor-pointer sm:w-auto px-8 py-4 rounded-full font-bold border border-white/10 text-white relative overflow-hidden group transition-colors duration-200 hover:bg-white/10 ${isSmallScreen ? "bg-white/10" : "bg-white/5 backdrop-blur-md"}`}
               >
                 <span className="relative z-10 inline-block transition-transform duration-200 group-hover:scale-110">

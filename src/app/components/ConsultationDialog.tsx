@@ -223,7 +223,7 @@ export function ConsultationDialog({ open, onOpenChange }: ConsultationDialogPro
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogPortal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.08),transparent_38%),rgba(2,6,23,0.82)] backdrop-blur-sm" />
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-[#ffffff9e]" />
         <DialogPrimitive.Content className="fixed left-1/2 top-1/2 z-50 max-h-[88vh] w-[calc(100%-1rem)] max-w-[760px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[1.75rem] border border-cyan-500/10 bg-[linear-gradient(180deg,rgba(8,15,29,0.98),rgba(7,13,24,0.98))] shadow-[0_32px_120px_rgba(2,6,23,0.78)] outline-none sm:w-[calc(100%-2rem)]">
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(34,211,238,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(34,211,238,0.07)_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] opacity-20" />
           <div className="pointer-events-none absolute -left-24 top-12 h-56 w-56 rounded-full bg-cyan-500/12 blur-[110px]" />
